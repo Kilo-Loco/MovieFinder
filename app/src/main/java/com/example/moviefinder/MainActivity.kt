@@ -48,7 +48,7 @@ import com.example.moviefinder.ui.theme.MovieFinderTheme
 import java.lang.Exception
 import java.util.HashSet
 
-const val parentSKU = "com.amazon.sample.iap.consumable.streaminfo"
+const val parentSKU = "com.kiloloco.moviefinder.iap.consumable.streaminfo"
 
 @ExperimentalFoundationApi
 class MainActivity : ComponentActivity() {
@@ -70,6 +70,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         configureAmplify()
+        PurchasingService.registerListener(this, purchasingListener)
 
         setContent {
             MaterialTheme {
@@ -81,13 +82,13 @@ class MainActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         //getUserData() will query the Appstore for the Users information
-//        PurchasingService.getUserData()
+        PurchasingService.getUserData()
         //getPurchaseUpdates() will query the Appstore for any previous purchase
-//        PurchasingService.getPurchaseUpdates(true)
+        PurchasingService.getPurchaseUpdates(true)
         //getProductData will validate the SKUs with Amazon Appstore
         val productSkus: MutableSet<String> = HashSet()
         productSkus.add(parentSKU)
-//        PurchasingService.getProductData(productSkus)
+        PurchasingService.getProductData(productSkus)
         Log.i("KILO", "Validating SKUs with Amazon")
     }
 
@@ -281,7 +282,7 @@ fun MovieDetails(vm: MovieViewModel) {
                     Text(text = "Not available on streaming", fontWeight = FontWeight.Bold)
                 }
             } else {
-                Button(onClick = {}) {
+                Button(onClick = { PurchasingService.purchase(parentSKU) }) {
                     Text(text = "Purchase Streaming Info")
                 }
             }

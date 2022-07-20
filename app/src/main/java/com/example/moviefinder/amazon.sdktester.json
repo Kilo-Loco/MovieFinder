@@ -1,8 +1,1 @@
-{
-  "com.amazon.sample.iap.consumable.streaminfo": {
-    "description":"Streaming locations of movies",
-    "title":"Stream Info",
-    "itemType":"CONSUMABLE",
-    "price":5.0
-  }
-}
+{"com.kiloloco.moviefinder.iap.consumable.streaminfo":{"smallIconUrl":"http://","title":"Stream Info","itemType":"CONSUMABLE","price":5.0,"description":"Allow you to view streaming locations","languageTitleMap":{"US":"Stream Info"},"languageDescriptionMap":{"US":"Allow you to view streaming locations"},"currencyPriceMap":{"BR":0.0,"DE":0.0,"AU":0.0,"IN":0.0,"JP":0.0,"MX":0.0,"GB":0.0,"IT":0.0,"FR":0.0,"US":0.0,"ES":0.0,"CA":0.0}}}

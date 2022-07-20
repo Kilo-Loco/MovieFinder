@@ -1,0 +1,8 @@
+{
+  "com.amazon.sample.iap.consumable.streaminfo": {
+    "description":"Streaming locations of movies",
+    "title":"Stream Info",
+    "itemType":"CONSUMABLE",
+    "price":5.0
+  }
+}

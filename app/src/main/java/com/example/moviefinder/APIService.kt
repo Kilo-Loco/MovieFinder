@@ -1,10 +1,14 @@
 package com.example.moviefinder
 
+import android.app.Activity
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.amplifyframework.core.Amplify
 import com.example.moviefinder.ApiService.Companion.apiService
 import com.google.gson.annotations.SerializedName
 import kotlinx.coroutines.CoroutineScope
@@ -86,6 +90,10 @@ interface ApiService {
 }
 
 class MovieViewModel : ViewModel() {
+    private val _isSignedIn = mutableStateOf(false)
+    val isSignedIn: Boolean
+        get() = _isSignedIn.value
+
     private val _moviesList = mutableStateListOf<Movie>()
     val moviesList: List<Movie>
         get() = _moviesList
@@ -95,6 +103,24 @@ class MovieViewModel : ViewModel() {
     private val _streamProviders = mutableStateListOf<VideoStreamPlatform>()
     val streamProviders: List<VideoStreamPlatform>
         get() = _streamProviders
+
+    private val _hasPurchasedStreamingInfo = mutableStateOf(false)
+    val hasPurchasedStreamingInfo: Boolean
+        get() = _hasPurchasedStreamingInfo.value
+
+    fun login(activity: Activity) {
+        Amplify.Auth.signInWithWebUI(activity,
+            { Log.i("AuthQuickStart", "Signin OK = $it") },
+            { Log.e("AuthQuickStart", "Signin failed", it) }
+        )
+    }
+
+    fun checkAuthStatus() {
+        Amplify.Auth.fetchAuthSession(
+            { Log.i("KILO", "Auth session ${it.isSignedIn}") },
+            { Log.e("KILO", "Failed to get auth session", it) }
+        )
+    }
 
     fun getTopRatedMovies() {
         viewModelScope.launch {

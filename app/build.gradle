@@ -60,10 +60,14 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
 
+    implementation 'com.amazon.device:amazon-appstore-sdk:3.0.3'
+
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation "io.coil-kt:coil-compose:1.4.0"
 
     implementation "androidx.navigation:navigation-compose:2.5.0"
+
+    implementation 'com.amplifyframework:aws-auth-cognito:1.36.2'
 }

@@ -122,4 +122,12 @@ class MovieViewModel : ViewModel() {
         PurchasingService.getProductData(productSkus)
         Log.i("KILO", "Validating SKUs with Amazon")
     }
+
+    fun purchaseStreamingInfo() {
+        purchasingListener.onPurchase = {
+            allowStreamingInfoAccess()
+        }
+
+        PurchasingService.purchase(parentSKU)
+    }
 }

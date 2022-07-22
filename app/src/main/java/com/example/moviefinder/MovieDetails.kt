@@ -45,7 +45,7 @@ fun MovieDetails(vm: MovieViewModel) {
                     Text(text = "Not available on streaming", fontWeight = FontWeight.Bold)
                 }
             } else {
-                Button(onClick = { PurchasingService.purchase(parentSKU) }) {
+                Button(onClick = { vm.purchaseStreamingInfo() }) {
                     Text(text = "Purchase Streaming Info")
                 }
             }

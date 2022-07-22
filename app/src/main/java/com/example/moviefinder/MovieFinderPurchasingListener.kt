@@ -11,6 +11,9 @@ class MovieFinderPurchasingListener: PurchasingListener {
     private var currentUserId: String? = null
     private var currentMarketplace: String? = null
 
+    lateinit var onPurchase: () -> Unit
+    lateinit var removePurchases: () -> Unit
+
     override fun onUserDataResponse(response: UserDataResponse) {
         when (response.requestStatus) {
             UserDataResponse.RequestStatus.SUCCESSFUL -> {
@@ -52,7 +55,7 @@ class MovieFinderPurchasingListener: PurchasingListener {
                     purchaseResponse.receipt.receiptId,
                     FulfillmentResult.FULFILLED
                 )
-//                viewModel.allowStreamingInfoAccess()
+                onPurchase()
             }
             PurchaseResponse.RequestStatus.FAILED -> {}
             else -> {
@@ -66,7 +69,7 @@ class MovieFinderPurchasingListener: PurchasingListener {
             PurchaseUpdatesResponse.RequestStatus.SUCCESSFUL -> {
                 for (receipt in response.receipts) {
                     if (!receipt.isCanceled) {
-//                        viewModel.removeStreamingInfoAccess()
+                        removePurchases()
                     }
                 }
                 if (response.hasMore()) {

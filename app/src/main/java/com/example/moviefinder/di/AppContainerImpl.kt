@@ -31,7 +31,7 @@ class AppContainerImpl(private val applicationContext: Context) : AppContainer {
     }
 
     override val movieFinderPurchasingListener: MovieFinderPurchasingListener by lazy {
-        MovieFinderPurchasingListener()
+        MovieFinderPurchasingListener(moviesRepository)
     }
 
 }

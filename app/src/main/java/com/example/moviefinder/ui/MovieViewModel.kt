@@ -14,10 +14,7 @@ import com.example.moviefinder.MovieFinderPurchasingListener
 import com.example.moviefinder.VideoStreamPlatform
 import com.example.moviefinder.data.MoviesRepository
 import com.example.moviefinder.parentSKU
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 data class MovieViewModelState(
@@ -29,12 +26,23 @@ data class MovieViewModelState(
 )
 
 class MovieViewModel(
-    private val moviesRepository: MoviesRepository,
-    private val purchasingListener: MovieFinderPurchasingListener
+    private val moviesRepository: MoviesRepository
 ) : ViewModel() {
 
     private val viewModelState = MutableStateFlow(MovieViewModelState())
-    val uiState = viewModelState.stateIn(
+
+    val uiState = combine(
+        moviesRepository.isPurchasedStreamingInfo,
+        viewModelState
+    ) { isPurchasedStreamingInfo, viewModelState ->
+        MovieViewModelState(
+            isSignedIn = viewModelState.isSignedIn,
+            moviesList = viewModelState.moviesList,
+            selectedMovie = viewModelState.selectedMovie,
+            streamProviders = viewModelState.streamProviders,
+            hasPurchasedStreamingInfo = isPurchasedStreamingInfo
+        )
+    }.stateIn(
         viewModelScope,
         SharingStarted.Eagerly,
         viewModelState.value
@@ -93,16 +101,8 @@ class MovieViewModel(
         }
     }
 
-    fun allowStreamingInfoAccess() {
-        viewModelScope.launch {
-            viewModelState.update { it.copy(hasPurchasedStreamingInfo = true) }
-        }
-    }
-
     fun removeStreamingInfoAccess() {
-        viewModelScope.launch {
-            viewModelState.update { it.copy(hasPurchasedStreamingInfo = false) }
-        }
+        moviesRepository.setPurchaseStreamingInfo(false)
     }
 
     fun getAppStoreData() {
@@ -118,24 +118,16 @@ class MovieViewModel(
     }
 
     fun purchaseStreamingInfo() {
-        purchasingListener.onPurchase = {
-            allowStreamingInfoAccess()
-        }
-
-        //TODO: remove after test IAP
-        allowStreamingInfoAccess()
-
         PurchasingService.purchase(parentSKU)
     }
 
     companion object {
         fun provideFactory(
-            moviesRepository: MoviesRepository,
-            purchasingListener: MovieFinderPurchasingListener
+            moviesRepository: MoviesRepository
         ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return MovieViewModel(moviesRepository, purchasingListener) as T
+                return MovieViewModel(moviesRepository) as T
             }
         }
     }

@@ -4,15 +4,13 @@ import android.util.Log
 import com.amazon.device.iap.PurchasingListener
 import com.amazon.device.iap.PurchasingService
 import com.amazon.device.iap.model.*
+import com.example.moviefinder.data.MoviesRepository
 
 const val parentSKU = "com.kiloloco.moviefinder.iap.consumable.streaminfo"
 
-class MovieFinderPurchasingListener: PurchasingListener {
+class MovieFinderPurchasingListener(private val moviesRepository: MoviesRepository): PurchasingListener {
     private var currentUserId: String? = null
     private var currentMarketplace: String? = null
-
-    lateinit var onPurchase: () -> Unit
-    lateinit var removePurchases: () -> Unit
 
     override fun onUserDataResponse(response: UserDataResponse) {
         when (response.requestStatus) {
@@ -55,7 +53,7 @@ class MovieFinderPurchasingListener: PurchasingListener {
                     purchaseResponse.receipt.receiptId,
                     FulfillmentResult.FULFILLED
                 )
-                onPurchase()
+                moviesRepository.setPurchaseStreamingInfo(true)
             }
             PurchaseResponse.RequestStatus.FAILED -> {}
             else -> {
@@ -69,7 +67,7 @@ class MovieFinderPurchasingListener: PurchasingListener {
             PurchaseUpdatesResponse.RequestStatus.SUCCESSFUL -> {
                 for (receipt in response.receipts) {
                     if (!receipt.isCanceled) {
-                        removePurchases()
+                        moviesRepository.setPurchaseStreamingInfo(false)
                     }
                 }
                 if (response.hasMore()) {

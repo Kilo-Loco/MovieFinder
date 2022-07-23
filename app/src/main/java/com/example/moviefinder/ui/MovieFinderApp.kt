@@ -17,8 +17,7 @@ private fun AppNavigator(appContainer: AppContainer) {
 
     val viewModel: MovieViewModel = viewModel(
         factory = MovieViewModel.provideFactory(
-            appContainer.moviesRepository,
-            appContainer.movieFinderPurchasingListener
+            appContainer.moviesRepository
         )
     )
     NavHost(navController = navController, startDestination = "topMovies") {

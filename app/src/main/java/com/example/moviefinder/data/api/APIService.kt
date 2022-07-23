@@ -23,7 +23,7 @@ interface ApiService {
                 val request = chain.request().newBuilder()
                 val originalHttpUrl = chain.request().url()
                 val url = originalHttpUrl.newBuilder()
-                    .addQueryParameter("key", API_KEY).build()
+                    .addQueryParameter("api_key", API_KEY).build()
                 request.header("Content-Type", "application/json;charset=utf-8");
                 request.url(url)
                 chain.proceed(request.build())

@@ -1,4 +1,4 @@
-package com.example.moviefinder
+package com.example.moviefinder.ui
 
 import android.app.Activity
 import android.content.Context
@@ -10,19 +10,21 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
+import androidx.compose.foundation.lazy.items
 
 fun Context.findActivity(): Activity {
     var context = this
@@ -40,10 +42,12 @@ fun MoviesView(navController: NavController, vm: MovieViewModel) {
         vm.getTopRatedMovies()
     })
 
+    val uiState by vm.uiState.collectAsState()
+
     val currentActivity = LocalContext.current.findActivity()
     val authText: String
     val authAction: () -> Unit
-    if (vm.isSignedIn) {
+    if (uiState.isSignedIn) {
         authText = "Sign Out"
         authAction = { vm.signOut() }
     } else {
@@ -66,7 +70,7 @@ fun MoviesView(navController: NavController, vm: MovieViewModel) {
         LazyVerticalGrid(
             cells = GridCells.Adaptive(150.dp),
             content = {
-                items(vm.moviesList) { movie ->
+                items(uiState.moviesList) { movie ->
                     Image(
                         painter = rememberImagePainter(movie.fullPostPath),
                         contentDescription = null,

@@ -1,5 +1,7 @@
 package com.example.moviefinder
 
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -16,10 +18,13 @@ import com.amplifyframework.core.Amplify
 @ExperimentalFoundationApi
 class MainActivity : ComponentActivity() {
 
-    private val viewModel = MovieViewModel()
+    private lateinit var viewModel: MovieViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val apiKey = getApiKey()
+        viewModel = MovieViewModel(apiKey)
 
         configureAmplify()
         viewModel.checkAuthStatus()
@@ -30,6 +35,12 @@ class MainActivity : ComponentActivity() {
                 AppNavigator()
             }
         }
+    }
+
+    private fun getApiKey(): String {
+        val ai: ApplicationInfo = applicationContext.packageManager
+            .getApplicationInfo(applicationContext.packageName, PackageManager.GET_META_DATA)
+        return ai.metaData["tmdbApiKey"].toString()
     }
 
     override fun onResume() {
@@ -50,10 +61,10 @@ class MainActivity : ComponentActivity() {
     @Composable
     private fun AppNavigator() {
         val navController = rememberNavController()
-        
+
         NavHost(navController = navController, startDestination = "topMovies") {
             composable("topMovies") {
-                MoviesView(navController = navController,vm = viewModel)
+                MoviesView(navController = navController, vm = viewModel)
             }
             composable("movieDetails") { MovieDetails(vm = viewModel) }
         }

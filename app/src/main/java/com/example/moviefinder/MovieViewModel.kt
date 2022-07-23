@@ -11,8 +11,9 @@ import com.amplifyframework.core.Amplify
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
-class MovieViewModel : ViewModel() {
+class MovieViewModel(apiKey: String) : ViewModel() {
     private val purchasingListener = MovieFinderPurchasingListener()
+    private val apiService = ApiService.create(apiKey)
 
     private val _isSignedIn = mutableStateOf(false)
     val isSignedIn: Boolean
@@ -66,7 +67,6 @@ class MovieViewModel : ViewModel() {
 
     fun getTopRatedMovies() {
         viewModelScope.launch {
-            val apiService = ApiService.getInstance()
             try {
                 _moviesList.clear()
                 _moviesList.addAll(apiService.topRatedMovies().movies)
@@ -78,7 +78,6 @@ class MovieViewModel : ViewModel() {
 
     fun getStreamingProviders() {
         viewModelScope.launch {
-            val apiService = ApiService.getInstance()
             try {
                 _streamProviders.clear()
 

@@ -38,11 +38,13 @@ private fun AppNavigator(appContainer: AppContainer) {
 
             if (currentActivity != null) {
                 MoviesView(
-                    navController = navController,
                     uiState = uiState,
                     onLogin = { appContainer.amplifyHandlerService.login(currentActivity) },
                     onLogout = { appContainer.amplifyHandlerService.logout() },
-                    onSelectMovie = { viewModel.selectMovie(it) }
+                    onSelectMovie = {
+                        viewModel.selectMovie(it)
+                        navController.navigate("movieDetails")
+                    }
                 )
             }
         }

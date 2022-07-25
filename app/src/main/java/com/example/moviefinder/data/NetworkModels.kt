@@ -1,4 +1,4 @@
-package com.example.moviefinder
+package com.example.moviefinder.data
 
 import com.google.gson.annotations.SerializedName
 

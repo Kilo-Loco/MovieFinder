@@ -1,18 +1,21 @@
 package com.example.moviefinder.ui
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.moviefinder.data.Movie
+import com.example.moviefinder.data.VideoStreamPlatform
+import com.example.moviefinder.ui.theme.MovieFinderTheme
 
 @Composable
 fun MovieDetails(uiState: MovieViewModelState, onPurchase: () -> Unit) {
@@ -28,14 +31,18 @@ fun MovieDetails(uiState: MovieViewModelState, onPurchase: () -> Unit) {
             })
         }
     ) {
-        Column() {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
             if (selectedMovie != null) {
                 Text(text = selectedMovie.overview, fontSize = 20.sp)
                 Spacer(modifier = Modifier.height(20.dp))
 
                 if (uiState.hasPurchasedStreamingInfo) {
                     if (uiState.streamProviders.isNotEmpty()) {
-                        Text(text = "Streaming on:", fontWeight = FontWeight.Bold)
+                        Text(text = "Now you can watch the movie on:", fontWeight = FontWeight.Bold)
                         uiState.streamProviders.forEach {
                             Text(it.name)
                         }
@@ -44,10 +51,56 @@ fun MovieDetails(uiState: MovieViewModelState, onPurchase: () -> Unit) {
                     }
                 } else {
                     Button(onClick = { onPurchase() }) {
-                        Text(text = "Purchase Streaming Info")
+                        Text(text = "Purchase Movie")
                     }
                 }
             }
         }
+    }
+}
+
+@Preview("Movies details screen streaming enabled", fontScale = 1.5f, device = Devices.PIXEL_4_XL)
+@Composable
+fun PreviewMovieDetailsNoPay() {
+    MovieFinderTheme {
+
+        val uiState = MovieViewModelState(
+            isSignedIn = true,
+            selectedMovie = Movie(
+                id = "movie1",
+                title = "A cool movie",
+                posterPath = "",
+                overview = "Overview of the cool movie"
+            ),
+            streamProviders = listOf(
+                VideoStreamPlatform("Netflox"),
+                VideoStreamPlatform("Amazing video")
+            ),
+            hasPurchasedStreamingInfo = true
+        )
+        MovieDetails(uiState, {})
+    }
+}
+
+@Preview("Movies details screen streaming disabled", fontScale = 1.5f, device = Devices.PIXEL_4_XL)
+@Composable
+fun PreviewMovieDetails() {
+    MovieFinderTheme {
+
+        val uiState = MovieViewModelState(
+            isSignedIn = true,
+            selectedMovie = Movie(
+                id = "movie1",
+                title = "A cool movie",
+                posterPath = "",
+                overview = "Overview of the cool movie"
+            ),
+            streamProviders = listOf(
+                VideoStreamPlatform("Netflox"),
+                VideoStreamPlatform("Amazing video")
+            ),
+            hasPurchasedStreamingInfo = false
+        )
+        MovieDetails(uiState, {})
     }
 }

@@ -3,8 +3,8 @@ package com.example.moviefinder.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.moviefinder.Movie
-import com.example.moviefinder.VideoStreamPlatform
+import com.example.moviefinder.data.Movie
+import com.example.moviefinder.data.VideoStreamPlatform
 import com.example.moviefinder.data.MoviesRepository
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch

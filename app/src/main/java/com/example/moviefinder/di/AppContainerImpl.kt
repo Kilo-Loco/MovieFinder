@@ -3,6 +3,8 @@ package com.example.moviefinder.di
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import com.example.moviefinder.AmplifyHandler
+import com.example.moviefinder.AmplifyService
 import com.example.moviefinder.ApiService
 import com.example.moviefinder.MovieFinderPurchasingListener
 import com.example.moviefinder.data.MoviesRepository
@@ -12,6 +14,7 @@ interface AppContainer {
     val apiService: ApiService
     val moviesRepository: MoviesRepository
     val movieFinderPurchasingListener: MovieFinderPurchasingListener
+    val amplifyHandlerService: AmplifyService
 }
 
 
@@ -32,6 +35,10 @@ class AppContainerImpl(private val applicationContext: Context) : AppContainer {
 
     override val movieFinderPurchasingListener: MovieFinderPurchasingListener by lazy {
         MovieFinderPurchasingListener(moviesRepository)
+    }
+
+    override val amplifyHandlerService: AmplifyService by lazy {
+        AmplifyHandler(applicationContext, moviesRepository)
     }
 
 }

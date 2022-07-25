@@ -1,4 +1,4 @@
-package com.example.moviefinder
+package com.example.moviefinder.iap
 
 import android.util.Log
 import com.amazon.device.iap.PurchasingListener

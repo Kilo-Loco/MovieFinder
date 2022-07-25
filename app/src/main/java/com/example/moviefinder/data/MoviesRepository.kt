@@ -6,6 +6,10 @@ import kotlinx.coroutines.flow.StateFlow
 
 class MoviesRepository(private val apiService: ApiService) {
 
+    private val _isLoggedIn = MutableStateFlow(false) //An initial value is required
+    val isLoggedIn: StateFlow<Boolean>
+        get() = _isLoggedIn
+
     private val _isPurchasedStreamingInfo = MutableStateFlow(false) //An initial value is required
     val isPurchasedStreamingInfo: StateFlow<Boolean>
         get() = _isPurchasedStreamingInfo
@@ -20,5 +24,9 @@ class MoviesRepository(private val apiService: ApiService) {
 
     fun setPurchaseStreamingInfo(isPurchased: Boolean) {
         _isPurchasedStreamingInfo.value = isPurchased
+    }
+
+    fun setLoggedin(isLoggedIn: Boolean) {
+        _isLoggedIn.value = isLoggedIn
     }
 }

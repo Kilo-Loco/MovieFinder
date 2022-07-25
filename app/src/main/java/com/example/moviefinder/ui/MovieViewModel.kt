@@ -1,16 +1,11 @@
 package com.example.moviefinder.ui
 
-import android.app.Activity
 import android.util.Log
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.amazon.device.iap.PurchasingService
-import com.amplifyframework.core.Amplify
 import com.example.moviefinder.Movie
-import com.example.moviefinder.MovieFinderPurchasingListener
 import com.example.moviefinder.VideoStreamPlatform
 import com.example.moviefinder.data.MoviesRepository
 import com.example.moviefinder.parentSKU
@@ -32,11 +27,12 @@ class MovieViewModel(
     private val viewModelState = MutableStateFlow(MovieViewModelState())
 
     val uiState = combine(
+        moviesRepository.isLoggedIn,
         moviesRepository.isPurchasedStreamingInfo,
         viewModelState
-    ) { isPurchasedStreamingInfo, viewModelState ->
+    ) { isLoggedIn, isPurchasedStreamingInfo, viewModelState ->
         MovieViewModelState(
-            isSignedIn = viewModelState.isSignedIn,
+            isSignedIn = isLoggedIn,
             moviesList = viewModelState.moviesList,
             selectedMovie = viewModelState.selectedMovie,
             streamProviders = viewModelState.streamProviders,
@@ -47,36 +43,6 @@ class MovieViewModel(
         SharingStarted.Eagerly,
         viewModelState.value
     )
-
-    fun login(activity: Activity) {
-        Amplify.Auth.signInWithWebUI(activity,
-            {
-                Log.i("KILO", "Signin OK = $it")
-                viewModelState.update { it.copy(isSignedIn = true) }
-            },
-            { Log.e("KILO", "Signin failed", it) }
-        )
-    }
-
-    fun signOut() {
-        Amplify.Auth.signOut(
-            {
-                Log.i("KILO", "Sign out successful")
-                viewModelState.update { it.copy(isSignedIn = false) }
-            },
-            { Log.e("KILO", "Sign out error", it) }
-        )
-    }
-
-    fun checkAuthStatus() {
-        Amplify.Auth.fetchAuthSession(
-            {
-                Log.i("KILO", "Auth session ${it.isSignedIn}")
-                viewModelState.update { it.copy(isSignedIn = true) }
-            },
-            { Log.e("KILO", "Failed to get auth session", it) }
-        )
-    }
 
     fun getTopRatedMovies() {
         viewModelScope.launch {

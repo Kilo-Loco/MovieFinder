@@ -8,7 +8,7 @@ import com.amazon.device.iap.PurchasingService
 import com.example.moviefinder.Movie
 import com.example.moviefinder.VideoStreamPlatform
 import com.example.moviefinder.data.MoviesRepository
-import com.example.moviefinder.parentSKU
+import com.example.moviefinder.iap.parentSKU
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -25,6 +25,12 @@ class MovieViewModel(
 ) : ViewModel() {
 
     private val viewModelState = MutableStateFlow(MovieViewModelState())
+
+    init {
+
+        getTopRatedMovies()
+        //getAppStoreData()
+    }
 
     val uiState = combine(
         moviesRepository.isLoggedIn,
@@ -44,7 +50,7 @@ class MovieViewModel(
         viewModelState.value
     )
 
-    fun getTopRatedMovies() {
+    private fun getTopRatedMovies() {
         viewModelScope.launch {
             viewModelState.update { it.copy(moviesList = moviesRepository.getTopRatedMovies().movies) }
         }

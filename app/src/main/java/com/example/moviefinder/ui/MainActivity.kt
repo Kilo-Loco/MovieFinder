@@ -29,11 +29,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        //  viewModel.getAppStoreData()
-    }
-
     private fun configureAmplify() {
         try {
             Amplify.addPlugin(AWSCognitoAuthPlugin())

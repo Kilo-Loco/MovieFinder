@@ -22,20 +22,17 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
+import com.example.moviefinder.Movie
 
 @ExperimentalFoundationApi
 @Composable
 fun MoviesView(
     navController: NavController,
-    vm: MovieViewModel,
     onLogin: () -> Unit,
-    onLogout: () -> Unit
+    onLogout: () -> Unit,
+    onSelectMovie: (Movie) -> Unit,
+    uiState: MovieViewModelState
 ) {
-    LaunchedEffect(Unit, block = {
-        vm.getTopRatedMovies()
-    })
-
-    val uiState by vm.uiState.collectAsState()
 
     Scaffold(
         topBar = {
@@ -61,7 +58,7 @@ fun MoviesView(
                                     .padding(4.dp)
                                     .aspectRatio(0.75f)
                                     .clickable(onClick = {
-                                        vm.selectMovie(movie)
+                                        onSelectMovie(movie)
                                         navController.navigate("movieDetails")
                                     })
                             )

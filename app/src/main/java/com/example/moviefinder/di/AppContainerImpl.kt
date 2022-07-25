@@ -6,8 +6,8 @@ import android.content.pm.PackageManager
 import com.example.moviefinder.AmplifyHandler
 import com.example.moviefinder.AmplifyService
 import com.example.moviefinder.ApiService
-import com.example.moviefinder.MovieFinderPurchasingListener
 import com.example.moviefinder.data.MoviesRepository
+import com.example.moviefinder.iap.MovieFinderPurchasingListener
 
 
 interface AppContainer {

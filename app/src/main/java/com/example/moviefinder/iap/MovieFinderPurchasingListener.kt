@@ -18,7 +18,7 @@ class MovieFinderPurchasingListener(private val moviesRepository: MoviesReposito
                 currentUserId = response.userData.userId
                 currentMarketplace = response.userData.marketplace
             }
-            UserDataResponse.RequestStatus.FAILED, UserDataResponse.RequestStatus.NOT_SUPPORTED -> {
+            UserDataResponse.RequestStatus.FAILED, UserDataResponse.RequestStatus.NOT_SUPPORTED, null -> {
             }
         }
     }

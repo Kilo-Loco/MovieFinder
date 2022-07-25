@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.ContextWrapper
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
@@ -32,17 +34,26 @@ private fun AppNavigator(appContainer: AppContainer) {
     NavHost(navController = navController, startDestination = "topMovies") {
         composable("topMovies") {
             val currentActivity = LocalContext.current.findActivity()
+            val uiState by viewModel.uiState.collectAsState()
+
             if (currentActivity != null) {
                 MoviesView(
                     navController = navController,
-                    vm = viewModel,
+                    uiState = uiState,
                     onLogin = { appContainer.amplifyHandlerService.login(currentActivity) },
-                    onLogout = { appContainer.amplifyHandlerService.logout() }
+                    onLogout = { appContainer.amplifyHandlerService.logout() },
+                    onSelectMovie = { viewModel.selectMovie(it) }
                 )
             }
         }
         composable("movieDetails") {
-            MovieDetails(vm = viewModel)
+            val uiState by viewModel.uiState.collectAsState()
+
+            MovieDetails(uiState = uiState,
+                onPurchase = {
+                    viewModel.getStreamingProviders()
+                    viewModel.purchaseStreamingInfo()
+                })
         }
     }
 }

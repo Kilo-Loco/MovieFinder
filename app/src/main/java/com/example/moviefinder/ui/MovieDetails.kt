@@ -9,47 +9,43 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun MovieDetails(vm: MovieViewModel) {
+fun MovieDetails(uiState: MovieViewModelState, onPurchase: () -> Unit) {
 
-    val uiState by vm.uiState.collectAsState()
-
-    LaunchedEffect(Unit, block = {
-        vm.getStreamingProviders()
-    })
-    val selectedMovie = uiState.selectedMovie!!
+    val selectedMovie = uiState.selectedMovie
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Row {
-                Text(selectedMovie.title)
-            } })
+            TopAppBar(title = {
+                Row {
+                    Text(selectedMovie?.title ?: "Weird we have a null movie!")
+                }
+            })
         }
     ) {
         Column() {
-            Text(text = selectedMovie.overview, fontSize = 20.sp)
-            Spacer(modifier = Modifier.height(20.dp))
+            if (selectedMovie != null) {
+                Text(text = selectedMovie.overview, fontSize = 20.sp)
+                Spacer(modifier = Modifier.height(20.dp))
 
-            if (uiState.hasPurchasedStreamingInfo) {
-                if (uiState.streamProviders.isNotEmpty()) {
-                    Text(text = "Streaming on:", fontWeight = FontWeight.Bold)
-                    uiState.streamProviders.forEach {
-                        Text(it.name)
+                if (uiState.hasPurchasedStreamingInfo) {
+                    if (uiState.streamProviders.isNotEmpty()) {
+                        Text(text = "Streaming on:", fontWeight = FontWeight.Bold)
+                        uiState.streamProviders.forEach {
+                            Text(it.name)
+                        }
+                    } else {
+                        Text(text = "Not available on streaming", fontWeight = FontWeight.Bold)
                     }
                 } else {
-                    Text(text = "Not available on streaming", fontWeight = FontWeight.Bold)
-                }
-            } else {
-                Button(onClick = { vm.purchaseStreamingInfo() }) {
-                    Text(text = "Purchase Streaming Info")
+                    Button(onClick = { onPurchase() }) {
+                        Text(text = "Purchase Streaming Info")
+                    }
                 }
             }
         }

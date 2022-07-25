@@ -1,4 +1,4 @@
-package com.example.moviefinder
+package com.example.moviefinder.amplify
 
 import android.app.Activity
 import android.content.Context

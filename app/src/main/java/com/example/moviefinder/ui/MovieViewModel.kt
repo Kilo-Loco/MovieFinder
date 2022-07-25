@@ -1,14 +1,11 @@
 package com.example.moviefinder.ui
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.amazon.device.iap.PurchasingService
 import com.example.moviefinder.Movie
 import com.example.moviefinder.VideoStreamPlatform
 import com.example.moviefinder.data.MoviesRepository
-import com.example.moviefinder.iap.parentSKU
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -27,9 +24,7 @@ class MovieViewModel(
     private val viewModelState = MutableStateFlow(MovieViewModelState())
 
     init {
-
         getTopRatedMovies()
-        //getAppStoreData()
     }
 
     val uiState = combine(
@@ -71,26 +66,6 @@ class MovieViewModel(
         viewModelScope.launch {
             viewModelState.update { it.copy(selectedMovie = movie) }
         }
-    }
-
-    fun removeStreamingInfoAccess() {
-        moviesRepository.setPurchaseStreamingInfo(false)
-    }
-
-    fun getAppStoreData() {
-        //getUserData() will query the Appstore for the Users information
-        PurchasingService.getUserData()
-        //getPurchaseUpdates() will query the Appstore for any previous purchase
-        PurchasingService.getPurchaseUpdates(true)
-        //getProductData will validate the SKUs with Amazon Appstore
-        val productSkus: MutableSet<String> = HashSet()
-        productSkus.add(parentSKU)
-        PurchasingService.getProductData(productSkus)
-        Log.i("KILO", "Validating SKUs with Amazon")
-    }
-
-    fun purchaseStreamingInfo() {
-        PurchasingService.purchase(parentSKU)
     }
 
     companion object {

@@ -52,7 +52,7 @@ private fun AppNavigator(appContainer: AppContainer) {
             MovieDetails(uiState = uiState,
                 onPurchase = {
                     viewModel.getStreamingProviders()
-                    viewModel.purchaseStreamingInfo()
+                    appContainer.iapHandler.purchaseStreamingInfo()
                 })
         }
     }

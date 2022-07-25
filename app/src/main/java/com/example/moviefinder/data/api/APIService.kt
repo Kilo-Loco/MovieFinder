@@ -1,5 +1,7 @@
-package com.example.moviefinder
+package com.example.moviefinder.data.api
 
+import com.example.moviefinder.TopRatedMoviesResponse
+import com.example.moviefinder.VideoProviderResponse
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

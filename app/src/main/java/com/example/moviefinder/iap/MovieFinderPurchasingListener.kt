@@ -6,8 +6,6 @@ import com.amazon.device.iap.PurchasingService
 import com.amazon.device.iap.model.*
 import com.example.moviefinder.data.MoviesRepository
 
-const val parentSKU = "com.kiloloco.moviefinder.iap.consumable.streaminfo"
-
 class MovieFinderPurchasingListener(private val moviesRepository: MoviesRepository): PurchasingListener {
     private var currentUserId: String? = null
     private var currentMarketplace: String? = null

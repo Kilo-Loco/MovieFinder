@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
-        //appContainer.iapHandler.getAppStoreData()
+        appContainer.iapHandler.getAppStoreData()
     }
 
 }

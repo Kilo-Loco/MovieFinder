@@ -26,7 +26,7 @@ class AmplifyHandler(
         Amplify.Auth.signInWithWebUI(callingActivity,
             {
                 Log.i("KILO", "Signin OK = $it")
-                repository.setLoggedin(true)
+                repository.setLoggedin(it.isSignInComplete)
             },
             { Log.e("KILO", "Signin failed", it) }
         )
@@ -46,7 +46,7 @@ class AmplifyHandler(
         Amplify.Auth.fetchAuthSession(
             {
                 Log.i("KILO", "Auth session ${it.isSignedIn}")
-                repository.setLoggedin(true)
+                repository.setLoggedin(it.isSignedIn)
             },
             { Log.e("KILO", "Failed to get auth session", it) }
         )

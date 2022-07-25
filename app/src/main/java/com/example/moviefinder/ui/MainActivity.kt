@@ -21,21 +21,12 @@ class MainActivity : ComponentActivity() {
 
         PurchasingService.registerListener(this, appContainer.movieFinderPurchasingListener)
 
-        configureAmplify()
-        // viewModel.checkAuthStatus()
+        appContainer.amplifyHandlerService.configureAmplify()
+        appContainer.amplifyHandlerService.checkAuthStatus()
 
         setContent {
             MovieFinderApp(appContainer)
         }
     }
 
-    private fun configureAmplify() {
-        try {
-            Amplify.addPlugin(AWSCognitoAuthPlugin())
-            Amplify.configure(applicationContext)
-            Log.i("KILO", "Configured amplify")
-        } catch (e: Exception) {
-            Log.e("KILO", "Amplify configuration failed", e)
-        }
-    }
 }

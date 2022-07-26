@@ -40,20 +40,15 @@ fun MovieDetails(uiState: MovieViewModelState, onPurchase: () -> Unit) {
                 Text(text = selectedMovie.overview, fontSize = 20.sp)
                 Spacer(modifier = Modifier.height(20.dp))
 
-                if (uiState.hasPurchasedStreamingInfo) {
-                    if (uiState.streamProviders.isNotEmpty()) {
-                        Text(text = "Now you can watch the movie on:", fontWeight = FontWeight.Bold)
-                        uiState.streamProviders.forEach {
-                            Text(it.name)
-                        }
-                    } else {
-                        Text(text = "Not available on streaming", fontWeight = FontWeight.Bold)
+                if (uiState.streamProviders.isNotEmpty()) {
+                    Text(text = "Now you can watch the movie on:", fontWeight = FontWeight.Bold)
+                    uiState.streamProviders.forEach {
+                        Text(it.name)
                     }
                 } else {
-                    Button(onClick = { onPurchase() }) {
-                        Text(text = "Purchase Movie")
-                    }
+                    Text(text = "Not available on streaming", fontWeight = FontWeight.Bold)
                 }
+
             }
         }
     }
@@ -75,7 +70,6 @@ fun PreviewMovieDetailsNoPay() {
                 VideoStreamPlatform("Netflix"),
                 VideoStreamPlatform("Amazing video")
             ),
-            hasPurchasedStreamingInfo = true
         )
         MovieDetails(uiState, {})
     }
@@ -98,7 +92,6 @@ fun PreviewMovieDetails() {
                 VideoStreamPlatform("Netflox"),
                 VideoStreamPlatform("Amazing video")
             ),
-            hasPurchasedStreamingInfo = false
         )
         MovieDetails(uiState, {})
     }

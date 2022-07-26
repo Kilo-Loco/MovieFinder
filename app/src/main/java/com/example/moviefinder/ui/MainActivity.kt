@@ -18,18 +18,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        PurchasingService.registerListener(this, appContainer.movieFinderPurchasingListener)
-
         appContainer.amplifyHandlerService.configureAmplify()
         appContainer.amplifyHandlerService.checkAuthStatus()
 
         setContent {
             MovieFinderApp(appContainer)
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        appContainer.iapHandler.getAppStoreData()
     }
 }

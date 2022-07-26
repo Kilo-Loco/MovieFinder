@@ -14,7 +14,6 @@ data class MovieViewModelState(
     val moviesList: List<Movie> = emptyList(),
     val selectedMovie: Movie? = null,
     val streamProviders: List<VideoStreamPlatform> = emptyList(),
-    val hasPurchasedStreamingInfo: Boolean = false
 )
 
 class MovieViewModel(
@@ -29,15 +28,13 @@ class MovieViewModel(
 
     val uiState = combine(
         moviesRepository.isLoggedIn,
-        moviesRepository.isPurchasedStreamingInfo,
         viewModelState
-    ) { isLoggedIn, isPurchasedStreamingInfo, viewModelState ->
+    ) { isLoggedIn, viewModelState ->
         MovieViewModelState(
             isSignedIn = isLoggedIn,
             moviesList = viewModelState.moviesList,
             selectedMovie = viewModelState.selectedMovie,
             streamProviders = viewModelState.streamProviders,
-            hasPurchasedStreamingInfo = isPurchasedStreamingInfo
         )
     }.stateIn(
         viewModelScope,

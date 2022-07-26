@@ -52,10 +52,10 @@ private fun AppNavigator(appContainer: AppContainer) {
             val uiState by viewModel.uiState.collectAsState()
             viewModel.getStreamingProviders()
 
-            MovieDetails(uiState = uiState,
-                onPurchase = {
-                    appContainer.iapHandler.purchaseStreamingInfo()
-                })
+            MovieDetails(
+                uiState = uiState,
+                onPurchase = { }
+            )
         }
     }
 }

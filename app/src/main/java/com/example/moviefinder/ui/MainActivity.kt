@@ -13,7 +13,7 @@ import com.example.moviefinder.MovieFinderApplication
 @ExperimentalFoundationApi
 class MainActivity : ComponentActivity() {
 
-    private val appContainer by lazy {  (application as MovieFinderApplication).container }
+    private val appContainer by lazy { (application as MovieFinderApplication).container }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,5 +32,4 @@ class MainActivity : ComponentActivity() {
         super.onResume()
         appContainer.iapHandler.getAppStoreData()
     }
-
 }

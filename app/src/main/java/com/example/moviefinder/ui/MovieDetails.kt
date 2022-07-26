@@ -63,7 +63,6 @@ fun MovieDetails(uiState: MovieViewModelState, onPurchase: () -> Unit) {
 @Composable
 fun PreviewMovieDetailsNoPay() {
     MovieFinderTheme {
-
         val uiState = MovieViewModelState(
             isSignedIn = true,
             selectedMovie = Movie(
@@ -73,7 +72,7 @@ fun PreviewMovieDetailsNoPay() {
                 overview = "Overview of the cool movie"
             ),
             streamProviders = listOf(
-                VideoStreamPlatform("Netflox"),
+                VideoStreamPlatform("Netflix"),
                 VideoStreamPlatform("Amazing video")
             ),
             hasPurchasedStreamingInfo = true

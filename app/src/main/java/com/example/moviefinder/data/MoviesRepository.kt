@@ -6,19 +6,11 @@ import kotlinx.coroutines.flow.StateFlow
 
 class MoviesRepository(private val apiService: ApiService) {
 
-    private val _isLoggedIn = MutableStateFlow(false) //An initial value is required
-    val isLoggedIn: StateFlow<Boolean>
-        get() = _isLoggedIn
-
     suspend fun getTopRatedMovies(): TopRatedMoviesResponse {
         return apiService.topRatedMovies()
     }
 
     suspend fun getStreamingPlatforms(movieId: String): List<VideoStreamPlatform>? {
         return apiService.streamingPlatforms(movieId).results.us?.streamingPlatforms
-    }
-
-    fun setLoggedin(isLoggedIn: Boolean) {
-        _isLoggedIn.value = isLoggedIn
     }
 }

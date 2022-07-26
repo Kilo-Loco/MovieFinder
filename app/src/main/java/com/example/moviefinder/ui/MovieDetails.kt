@@ -59,7 +59,6 @@ fun MovieDetails(uiState: MovieViewModelState, onPurchase: () -> Unit) {
 fun PreviewMovieDetailsNoPay() {
     MovieFinderTheme {
         val uiState = MovieViewModelState(
-            isSignedIn = true,
             selectedMovie = Movie(
                 id = "movie1",
                 title = "A cool movie",
@@ -81,7 +80,6 @@ fun PreviewMovieDetails() {
     MovieFinderTheme {
 
         val uiState = MovieViewModelState(
-            isSignedIn = true,
             selectedMovie = Movie(
                 id = "movie1",
                 title = "A cool movie",

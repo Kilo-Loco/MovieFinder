@@ -36,43 +36,29 @@ fun MoviesView(
         topBar = {
             TopAppBar(
                 title = { Text("Top Rated Movies") },
-                actions = {
-                    LoginButton(uiState.isSignedIn, onLogin, onLogout)
-                }
             )
         }
     ) {
         Column() {
-            if (uiState.isSignedIn) {
-                LazyVerticalGrid(
-                    cells = GridCells.Adaptive(150.dp),
-                    content = {
-                        items(uiState.moviesList) { movie ->
-                            Image(
-                                painter = rememberImagePainter(movie.fullPostPath),
-                                contentDescription = null,
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier
-                                    .padding(4.dp)
-                                    .aspectRatio(0.75f)
-                                    .clickable(onClick = {
-                                        onSelectMovie(movie)
-                                    })
-                            )
-                        }
+            LazyVerticalGrid(
+                cells = GridCells.Adaptive(150.dp),
+                content = {
+                    items(uiState.moviesList) { movie ->
+                        Image(
+                            painter = rememberImagePainter(movie.fullPostPath),
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .padding(4.dp)
+                                .aspectRatio(0.75f)
+                                .clickable(onClick = {
+                                    onSelectMovie(movie)
+                                })
+                        )
                     }
-                )
-            }
+                }
+            )
         }
-    }
-}
-
-@Composable
-fun LoginButton(signedIn: Boolean, onLogin: () -> Unit, onLogout: () -> Unit) {
-    if (signedIn) {
-        Button(onClick = { onLogout() }) { Text("Sign Out") }
-    } else {
-        Button(onClick = { onLogin() }) { Text("Sign In") }
     }
 }
 
@@ -84,7 +70,6 @@ fun PreviewMoviesView() {
     MovieFinderTheme {
 
         val uiState = MovieViewModelState(
-            isSignedIn = true,
             moviesList = listOf(
                 Movie(
                     id = "movie1",

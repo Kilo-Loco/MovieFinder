@@ -15,12 +15,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.moviefinder.di.AppContainer
 import com.example.moviefinder.ui.theme.MovieFinderTheme
 
-fun Context.findActivity(): Activity? = when (this) {
-    is Activity -> this
-    is ContextWrapper -> baseContext.findActivity()
-    else -> null
-}
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun AppNavigator(appContainer: AppContainer) {
@@ -33,20 +27,18 @@ private fun AppNavigator(appContainer: AppContainer) {
     )
     NavHost(navController = navController, startDestination = "topMovies") {
         composable("topMovies") {
-            val currentActivity = LocalContext.current.findActivity()
+
             val uiState by viewModel.uiState.collectAsState()
 
-            if (currentActivity != null) {
-                MoviesView(
-                    uiState = uiState,
-                    onLogin = { appContainer.amplifyHandlerService.login(currentActivity) },
-                    onLogout = { appContainer.amplifyHandlerService.logout() },
-                    onSelectMovie = {
-                        viewModel.selectMovie(it)
-                        navController.navigate("movieDetails")
-                    }
-                )
-            }
+            MoviesView(
+                uiState = uiState,
+                onLogin = { },
+                onLogout = { },
+                onSelectMovie = {
+                    viewModel.selectMovie(it)
+                    navController.navigate("movieDetails")
+                }
+            )
         }
         composable("movieDetails") {
             val uiState by viewModel.uiState.collectAsState()

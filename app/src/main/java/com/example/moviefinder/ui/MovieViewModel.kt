@@ -1,5 +1,6 @@
 package com.example.moviefinder.ui
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -10,7 +11,6 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 data class MovieViewModelState(
-    val isSignedIn: Boolean = false,
     val moviesList: List<Movie> = emptyList(),
     val selectedMovie: Movie? = null,
     val streamProviders: List<VideoStreamPlatform> = emptyList(),
@@ -26,17 +26,10 @@ class MovieViewModel(
         getTopRatedMovies()
     }
 
-    val uiState = combine(
-        moviesRepository.isLoggedIn,
-        viewModelState
-    ) { isLoggedIn, viewModelState ->
-        MovieViewModelState(
-            isSignedIn = isLoggedIn,
-            moviesList = viewModelState.moviesList,
-            selectedMovie = viewModelState.selectedMovie,
-            streamProviders = viewModelState.streamProviders,
-        )
-    }.stateIn(
+    // placeholder
+    val isLoggedIn = MutableStateFlow(false)
+
+    val uiState = viewModelState.stateIn(
         viewModelScope,
         SharingStarted.Eagerly,
         viewModelState.value
